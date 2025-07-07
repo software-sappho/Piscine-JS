@@ -36,7 +36,7 @@ is.fun = function(fun){
     return typeof fun === 'function';
 }
 
-is.trythy = function(truthy){
+is.truthy = function(truthy){
     return Boolean(truthy);
 }
 
