@@ -139,3 +139,14 @@ Circular references can cause issues with:
 * Some serialization processes
 
 Let me know if you’re using this for something specific and need help with that!
+
+
+
+
+exercises to read:
+change
+circular
+declerations
+dog-years
+last first kiss
+mutability
