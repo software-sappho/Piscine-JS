@@ -2,6 +2,6 @@ function id (n){
     return n
 }
 
-function getLength([]){
-    return length([])
+function getLength(o){
+    return o.length
 }
