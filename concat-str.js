@@ -1,3 +1,3 @@
 function concatStr(n,o){
-    return n+o
+    return String(n)+String(o)
 }
