@@ -29,7 +29,7 @@ is.arr = function (arr){
 }
 
 is.obj = function (obj){
-    return typeof obj === 'object';
+    return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
 }
 
 is.fun = function(fun){
