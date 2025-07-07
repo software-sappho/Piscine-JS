@@ -6,7 +6,7 @@ const sourceObject = {
 }
 
 function get(key){
-    return sourceObject.key;
+    return sourceObject[key];
 }
 
 function set(key,value){
