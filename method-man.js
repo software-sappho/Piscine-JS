@@ -10,7 +10,7 @@ function yell(string){
     return string.toUpperCase()
 }
 
-function whsiper(string){
+function whisper(string){
     return "*" + string.toLowerCase() + "*"
 }
 
