@@ -13,6 +13,8 @@ function sameSign(num1, num2){
         return true
     }else if ((num1<0) && (num2<0)){
         return true
+    }else if ((num1===0) && (num2===0)){
+        return true
     }else{
         return false
     }
