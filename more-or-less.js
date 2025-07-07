@@ -1,7 +1,15 @@
-const more = (n) => n+1
+function more (n) {
+return n + 1
+}
 
-const less = (n) => n-1
+function less(n){
+    return n-1
+}
 
-const add = (n,o) => n+o
+function add (n,o){
+    return n+o
+}
 
-const sub = (n,o) => o-n
+function sub (n,o){
+    return n-o
+}
