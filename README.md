@@ -93,4 +93,49 @@ person.key;           // ❌ undefined (no property named "key")
 
 ---
 
-Let me know if you want practice exercises!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```js
+const circular = {
+    'circular': circular,
+}
+```
+
+❌ **Throws a `ReferenceError`**, because `circular` is being used **before it's defined** — which JavaScript doesn't allow during object initialization.
+
+---
+
+### ✅ Correct Way to Make a Circular Reference
+
+You need to **first declare the object**, and **then assign the circular reference**:
+
+```js
+const circular = {};
+circular.circular = circular;
+```
+
+Now `circular.circular.circular.circular...` will always point back to `circular` — infinitely. This is how you correctly create **self-referencing (circular)** structures in JavaScript.
+
+---
+
+### Why It Matters
+
+Circular references can cause issues with:
+
+* `JSON.stringify()` (will throw a `TypeError`)
+* Deep copying
+* Some serialization processes
+
+Let me know if you’re using this for something specific and need help with that!
