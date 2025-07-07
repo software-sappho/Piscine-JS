@@ -141,7 +141,32 @@ Circular references can cause issues with:
 Let me know if you’re using this for something specific and need help with that!
 
 
+🔧 What does .slice(1) mean?
+js
+Copy
+Edit
+str.slice(1)
+This returns a copy of the string from index 1 to the end (i.e. it skips the first character).
 
+Example:
+js
+Copy
+Edit
+const str = "hello";
+console.log(str.slice(1)); // "ello"
+So if you want to capitalize only the first letter and lowercase the rest:
+
+js
+Copy
+Edit
+capitalize("hELLO")
+➡ You want:
+
+h → uppercase = H
+
+ELLO → lowercase = ello
+
+So: "H" + "ello" = "Hello"
 
 exercises to read:
 change
