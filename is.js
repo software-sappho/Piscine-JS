@@ -41,5 +41,5 @@ is.trythy = function(truthy){
 }
 
 is.falsy = function(falsy){
-    return Boolean(falsy);
+    return !falsy;
 }
