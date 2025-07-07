@@ -7,6 +7,5 @@ function last(n){
 }
 
 function kiss(n){
-
-    return kiss=[(n[n.length-1]), (n[0])]
+    return (n[n.length-1]), (n[0])
 }
