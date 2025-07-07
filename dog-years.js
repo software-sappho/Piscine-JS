@@ -42,5 +42,3 @@ function dogYears(planet, age){
         return "unsupported planet"
     }
 }
-
-console.log(dogYears("earth", 31557600));  // should print 7
