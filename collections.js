@@ -26,7 +26,7 @@ const mapToObj = map => {
 };
 
 // Object to Array (key-value pairs)
-const objToArr = obj => Object.entries(obj);
+const objToArr = obj => Object.values(obj);
 
 // Object to Map
 const objToMap = obj => new Map(Object.entries(obj));
