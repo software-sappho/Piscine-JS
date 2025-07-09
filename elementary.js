@@ -31,5 +31,5 @@ function modulo(a,b){
 }
 
 function abs(number){
-    return number < 0 ? (number*-1) : number;
+    return number < 0 ? (-number) : number;
 }
