@@ -56,5 +56,8 @@ function superTypeOf(value) {
   if (value instanceof Map) return 'Map';
   if (value instanceof Set) return 'Set';
   if (typeof value === 'object') return 'Object';
-  return typeof value[0].toUpperCase() + typeof value.slice(1); // e.g., 'string' -> 'String'
+  
+  const t = typeof value;
+  return t.charAt(0).toUpperCase() + t.slice(1); // Capitalize 'string' -> 'String'
 }
+
