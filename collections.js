@@ -54,8 +54,8 @@ const strToObj = str => {
 function superTypeOf(value) {
   if (value === null) return 'null';
   if (Array.isArray(value)) return 'array';
-  if (value instanceof Map) return 'map';
-  if (value instanceof Set) return 'set';
-  if (typeof value === 'object') return 'object';
+  if (value instanceof Map) return 'Map';
+  if (value instanceof Set) return 'Set';
+  if (typeof value === 'object') return 'Object';
   return typeof value;
 }
