@@ -25,13 +25,13 @@ const mapToObj = map => {
   return obj;
 };
 
-// Object to Array (key-value pairs)
+// Object to Array (just values)
 const objToArr = obj => Object.values(obj);
 
 // Object to Map
 const objToMap = obj => new Map(Object.entries(obj));
 
-// Array to Object (assumes array of [key, value] pairs)
+// Array to Object (as indexed keys)
 const arrToObj = arr => {
   const obj = {};
   for (let i = 0; i < arr.length; i++) {
@@ -40,7 +40,7 @@ const arrToObj = arr => {
   return obj;
 };
 
-// String to Object (parses JSON string)
+// String to Object (as indexed characters)
 const strToObj = str => {
   const obj = {};
   for (let i = 0; i < str.length; i++) {
@@ -49,13 +49,12 @@ const strToObj = str => {
   return obj;
 };
 
-
-// Enhanced typeof that recognizes Map, Set, Array, and null
+// Enhanced typeof
 function superTypeOf(value) {
   if (value === null) return 'null';
-  if (Array.isArray(value)) return 'array';
+  if (Array.isArray(value)) return 'Array';
   if (value instanceof Map) return 'Map';
   if (value instanceof Set) return 'Set';
   if (typeof value === 'object') return 'Object';
-  return typeof value;
+  return typeof value[0].toUpperCase() + typeof value.slice(1); // e.g., 'string' -> 'String'
 }
