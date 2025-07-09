@@ -42,12 +42,13 @@ const arrToObj = arr => {
 
 // String to Object (parses JSON string)
 const strToObj = str => {
-  try {
-    return JSON.parse(str);
-  } catch {
-    return null;  // Return null if string is not valid JSON
+  const obj = {};
+  for (let i = 0; i < str.length; i++) {
+    obj[i] = str[i];
   }
+  return obj;
 };
+
 
 // Enhanced typeof that recognizes Map, Set, Array, and null
 function superTypeOf(value) {
