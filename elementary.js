@@ -1,35 +1,45 @@
-function multiply(a,b){
-    let a2=abs(a)
-    let b2=abs(b)
-    let result = 0;
-    for (let i = 0; i < b2; i++) {
-        result += a2;
-    }
-    return result
+function abs(n) {
+  return n < 0 ? -n : n;
 }
 
-function divide(a,b){
-    let a2=abs(a)
-    let b2=abs(b)
-    let result =0;
-    let total = a2;
+function multiply(a, b) {
+  const negativeResult = (a < 0) !== (b < 0);
+  let result = 0;
+  let x = abs(a);
+  let y = abs(b);
 
-    while (total >= b2){
-        total -= b2;
-        result++
-    }
-    return result
+  for (let i = 0; i < y; i++) {
+    result += x;
+  }
+  return negativeResult ? -result : result;
 }
 
-function modulo(a,b){
-    let a2=abs(a)
-    let b2=abs(b)
-    while (a2 >= b2) {
-        a2 -= b2;
-    }
-    return a2;
+function divide(a, b) {
+  if (b === 0) throw new Error("Division by zero");
+
+  const negativeResult = (a < 0) !== (b < 0);
+  let x = abs(a);
+  let y = abs(b);
+  let result = 0;
+
+  while (x >= y) {
+    x -= y;
+    result++;
+  }
+
+  return negativeResult ? -result : result;
 }
 
-function abs(number){
-    return number < 0 ? (-number) : number;
+function modulo(a, b) {
+  if (b === 0) throw new Error("Division by zero");
+
+  let x = abs(a);
+  let y = abs(b);
+
+  while (x >= y) {
+    x -= y;
+  }
+
+  // modulo sign is the same as the dividend's sign
+  return a < 0 ? -x : x;
 }
