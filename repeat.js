@@ -1,7 +1,6 @@
-function repeat(string, number){
-        let count = 0
-    while (count <= number){
-        count= count +1
-        return string
+function repeat(string, number) {
+    if (number <= 0) {
+        return '';
     }
+    return string + repeat(string, number - 1);
 }
