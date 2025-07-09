@@ -34,8 +34,8 @@ const objToMap = obj => new Map(Object.entries(obj));
 // Array to Object (assumes array of [key, value] pairs)
 const arrToObj = arr => {
   const obj = {};
-  for (const [key, value] of arr) {
-    obj[key] = value;
+  for (let i = 0; i < arr.length; i++) {
+    obj[i] = arr[i];
   }
   return obj;
 };
