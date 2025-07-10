@@ -4,7 +4,7 @@ function trunc(num){
     if (num>0){
     let result = 0
         while (result+1<=num){
-            result = result+1
+            result++
         }
         return result
     }
@@ -12,7 +12,7 @@ function trunc(num){
     if (num<0){
     let result = 0
     while (result-1>=num){
-        result = result -1
+        result--
     }
     return result
 
