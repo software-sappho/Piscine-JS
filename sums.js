@@ -1,21 +1,24 @@
 function sums(n) {
-  if (n === 0 || n === 1) return []; // exclude sums(0) and sums(1)
+  if (n <= 1) return [];
 
   const result = [];
 
-  function backtrack(remaining, start, path) {
+  function backtrack(remaining, path, start) {
     if (remaining === 0) {
-      result.push([...path]);
+      // Exclude partition that is just [n]
+      if (!(path.length === 1 && path[0] === n)) {
+        result.push([...path]);
+      }
       return;
     }
 
     for (let i = start; i <= remaining; i++) {
       path.push(i);
-      backtrack(remaining - i, i, path);
+      backtrack(remaining - i, path, i);
       path.pop();
     }
   }
 
-  backtrack(n, 1, []);
+  backtrack(n, [], 1);
   return result;
 }
