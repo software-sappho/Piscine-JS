@@ -29,6 +29,6 @@ function keepLast(string){
 
 function keepFirstLast(string){
 
-    return string.slice(0, 2) + slice(-2)
+    return string.slice(0, 2) + string.slice(-2)
 
 }
