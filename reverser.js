@@ -10,7 +10,7 @@ function reverse(value){
 
     if (Array.isArray(value)){
         let result = []
-        for (let i= value.length-1; i>-0; i--){
+        for (let i= value.length-1; i>=0; i--){
             result.push(value[i])
         }
     return result
