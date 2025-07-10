@@ -28,7 +28,7 @@ function keepLast(string){
 }
 
 function keepFirstLast(string){
-    if (length.string<=4){
+    if (string.length <= 4) {
         return string
     }
     return string.slice(0, 2) + string.slice(-2)
