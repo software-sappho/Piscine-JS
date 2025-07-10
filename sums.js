@@ -1,5 +1,5 @@
 function sums(n) {
-  if (n === 0) return []; // Fix for test case: sums(0) → []
+  if (n === 0 || n === 1) return []; // exclude sums(0) and sums(1)
 
   const result = [];
 
