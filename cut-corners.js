@@ -1,22 +1,23 @@
 function trunc(num) {
-    let result = 0
+    let result = 0;
 
     if (num > 0) {
-        while (result <= num - 1) {
-            result++
+        while (result + 1 <= num) {
+            result++;
         }
-        return result - 1
+        return result;
     }
 
     if (num < 0) {
-        while (result >= num + 1) {
-            result--
+        while (result - 1 >= num) {
+            result--;
         }
-        return result + 1
+        return result;
     }
 
-    return 0
+    return 0;
 }
+
 
 
 
