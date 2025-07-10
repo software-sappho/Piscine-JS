@@ -60,65 +60,68 @@
 
 //I have a piscine to finish okay?
 
-const multiply = (a, b) => {
-    let isNegative = false, res = 0
-    if (a > 0 && b < 0) b = -b, isNegative = true
-    if (a < 0 && b > 0) a = -a, isNegative = true
-    if (a < 0 && b < 0) a = -a, b = -b
-    for (let i = b; i > 0; i--) {
-        res += a
+function floor(x) {
+  // floor is the greatest integer less than or equal to x
+  if (x >= 0) {
+    let i = 0;
+    while (i + 1 <= x) {
+      i++;
     }
-    return isNegative ? -res : res
-}
-
-const divide = (a, b) => {
-    if (b === 0) throw new Error("Division by zero is not allowed")
-    let isNegative = false, res = 0
-    if (a > 0 && b < 0) b = -b, isNegative = true
-    if (a < 0 && b > 0) a = -a, isNegative = true
-    if (a < 0 && b < 0) a = -a, b = -b
-    for (; a >= b; a -= b) {
-        res++
+    return i;
+  } else {
+    let i = 0;
+    while (i - 1 >= x) {
+      i--;
     }
-    return isNegative ? -res : res
+    return i;
+  }
 }
 
-const modulo = (a, b) => {
-    if (b === 0) throw new Error("Modulo by zero is not allowed")
-    let isNegative = false
-    if (a > 0 && b < 0) b = -b, isNegative = true
-    if (a < 0 && b > 0) a = -a, isNegative = true
-    if (a < 0 && b < 0) a = -a, b = -b
-    for (; a >= b; a -= b) { }
-    return isNegative ? -a : a
-}
-
-const round = (nb) => {
-    if (modulo(nb, 1) >= 0.5) return divide(nb, 1) + 1
-    if (modulo(nb, 1) <= -0.5) return divide(nb, 1) - 1
-    return divide(nb, 1)
-}
-
-const ceil = (nb) => {
-    if (modulo(nb, 1) != 0 && nb > 0) return divide(nb, 1) + 1
-    if (modulo(nb, 1) != 0) return divide(nb, 1)
-    return nb
-}
-
-const floor = (nb) => {
-    if (modulo(nb, 1) != 0 && nb > 0) return divide(nb, 1)
-    if (modulo(nb, 1) != 0) return divide(nb, 1) - 1
-    return nb
-}
-
-const trunc = (nbr) => {
-    let sing = false
-    let c = 0
-    if (nbr == 0) return nbr
-    if (nbr > 68719476735) nbr -= 68719476735, c += 68719476735
-    if (nbr < 0) nbr = -nbr, sing = true
-    for (; nbr >= 1; nbr--) {
-        c++
+function ceil(x) {
+  // ceil is the smallest integer greater than or equal to x
+  if (x <= 0) {
+    let i = 0;
+    while (i - 1 >= x) {
+      i--;
     }
-    return sing ? -c : c
+    return i;
+  } else {
+    let i = 0;
+    while (i + 1 <= x) {
+      i++;
+    }
+    return i;
+  }
+}
+
+function trunc(x) {
+  // trunc is integer part towards zero
+  if (x >= 0) {
+    let i = 0;
+    while (i + 1 <= x) {
+      i++;
+    }
+    return i;
+  } else {
+    let i = 0;
+    while (i - 1 >= x) {
+      i--;
+    }
+    return i;
+  }
+}
+
+function round(x) {
+  // round to nearest integer, half away from zero (like Math.round)
+  // We'll compare distance to floor and ceil to find which is closer
+  let f = floor(x);
+  let c = ceil(x);
+  if (x - f < c - x) {
+    return f;
+  } else if (x - f > c - x) {
+    return c;
+  } else {
+    // halfway, round away from zero
+    return x >= 0 ? c : f;
+  }
 }
