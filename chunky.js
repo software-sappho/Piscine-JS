@@ -4,6 +4,7 @@ function chunk(array, int){
         let chunky = array.slice(i, i + int)
         result.push(chunky)
     }
+    return result
 }
 
 
