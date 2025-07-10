@@ -3,9 +3,9 @@ function flat(array) {
 
   for (let item of array) {
     if (Array.isArray(item)) {
-      result = result.concat(flat(item)); // recursively flatten
+      result = result.concat(item); // only flatten one level
     } else {
-      result.push(item); // push non-array value directly
+      result.push(item);
     }
   }
 
