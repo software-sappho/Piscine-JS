@@ -1,25 +1,23 @@
-
-function trunc(num){
-
-    if (num>0){
+function trunc(num) {
     let result = 0
-        while (result+1<=num){
+
+    if (num > 0) {
+        while (result <= num - 1) {
             result++
         }
-        return result
+        return result - 1
     }
 
-    if (num<0){
-    let result = 0
-    while (result-1>=num){
-        result--
-    }
-    return result
-
+    if (num < 0) {
+        while (result >= num + 1) {
+            result--
+        }
+        return result + 1
     }
 
     return 0
 }
+
 
 
 function round(num){
