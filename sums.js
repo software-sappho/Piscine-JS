@@ -1,4 +1,6 @@
 function sums(n) {
+  if (n === 0) return []; // Fix for test case: sums(0) → []
+
   const result = [];
 
   function backtrack(remaining, start, path) {
