@@ -1,6 +1,6 @@
 function groupPrice(string){
     const pattern = /\b[A-Z]{3}(\d+)\.(\d{2})\b/g;
-    let matches = string.matchAll(pattern)
+    let matches = [...string.matchAll(pattern)]
 
     if (matches.length === 0){
         return [];
