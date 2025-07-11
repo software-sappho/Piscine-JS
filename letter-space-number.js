@@ -4,7 +4,9 @@ function letterSpaceNumber(string){
 
     
     result = string.match(pattern)
-    
+    if (result === null){
+        return []
+    }
     return result
 
 }
