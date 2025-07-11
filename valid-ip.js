@@ -1,11 +1,13 @@
 function findIP(string) {
-    const octet = '(?:25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d?|0)';
-    const port = '(?::(6553[0-5]|655[0-2]\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]?\\d{1,4}))?';
-    const pattern = new RegExp(`\\b${octet}\\.${octet}\\.${octet}\\.${octet}${port}\\b`, 'g');
+    const octet = '(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])';
+    const port = '(?::(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4}))?';
+    const pattern = new RegExp(`(?:^|\\s)(${octet}\\.${octet}\\.${octet}\\.${octet}${port})(?=\\s|$)`, 'g');
     
-    let matches = [...string.matchAll(pattern)];
-    if (matches.length === 0) {
-        return [];
+    let matches = [];
+    let match;
+    while ((match = pattern.exec(string)) !== null) {
+        matches.push(match[1]);
     }
-    return matches.map(match => match[0]);
+    
+    return matches;
 }
