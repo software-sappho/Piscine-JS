@@ -26,7 +26,7 @@ function greedyQuery(dataSet){
 }
 
 function notSoGreedy(dataSet){
-    const notSoGreedyPattern = /https?:\/\/[^\s?]+(\?[^\s&=]+=[^\s&=]+(&[^\s&=]+=[^\s&=]+){1,2})\b/g
+    const notSoGreedyPattern = /https?:\/\/[^\s?]+(\?[^\s&=]+=[^\s&=]+(&[^\s&=]+=[^\s&=]+){1,2})(?=\s|$)/g;
 
     let match = dataSet.match(notSoGreedyPattern)
 
