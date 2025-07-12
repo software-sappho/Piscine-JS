@@ -1,13 +1,22 @@
-function findIP(string) {
-    const octet = '(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])';
-    const port = '(?::(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4}))?';
-    const pattern = new RegExp(`(?:^|\\s)(${octet}\\.${octet}\\.${octet}\\.${octet}${port})(?=\\s|$)`, 'g');
-    
-    let matches = [];
-    let match;
-    while ((match = pattern.exec(string)) !== null) {
-        matches.push(match[1]);
-    }
-    
-    return matches;
+function findIP(str) {
+    const regex = /([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})(:[0-9]{1,5})?/g
+    let result1 = str.match(regex)
+    const result2 = result1.filter(x => {
+        let port
+        let ip
+        if (x.includes(":")) {
+            port = x.split(":")[1]
+            if (parseInt(port).toString() !== port) return false
+            if (parseInt(port) > 65535) return false
+            ip = x.split(":")[0].split(".")
+        } else {
+            ip = x.split(".")
+        }
+        for (const ele of ip) {
+            if (parseInt(ele).toString() !== ele) return false
+            if (parseInt(ele) > 255) return false
+        }
+        return true
+    })
+    return result2
 }
