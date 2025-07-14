@@ -5,6 +5,6 @@ function firstDayWeek(week, year){
 
     const januaryFirst = new Date(year + "-01-01");
 
-    console.log(januaryFirst)
+    return januaryFirst
 
 }
