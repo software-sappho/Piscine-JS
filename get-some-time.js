@@ -3,7 +3,7 @@ function firstDayWeek(week, year){
         return
     }
 
-    const januaryFirst = new Date(year + "-01-01");
+    const januaryFirst = year + "-01-01";
 
     return januaryFirst
 
