@@ -1,34 +1,30 @@
-function firstDayWeek(week, year) {
-  if (week < 1 || week > 53) return;
+function firstDayWeek(weekNumber, year) {
+  const jan1 = new Date(`${year}-01-01`);
+  const jan1Day = jan1.getDay(); // 0 (Sun) to 6 (Sat)
 
-  const jan1 = new Date(year + "-01-01");
+  // Calculate the offset from Jan 1 to the first Monday
+  const offset = jan1Day === 0 ? 1 : 8 - jan1Day;
 
-  if (week === 1) {
-    // Week 1 always starts on Jan 1 (even if not Monday)
-    const dd = String(jan1.getDate()).padStart(2, '0');
-    const mm = String(jan1.getMonth() + 1).padStart(2, '0');
-    const yyyy = jan1.getFullYear();
-    return `${dd}-${mm}-${yyyy}`;
+  // Calculate the first Monday of the year
+  const firstMonday = new Date(jan1);
+  firstMonday.setDate(jan1.getDate() + offset - (weekNumber === 1 ? 0 : 7));
+
+  // Calculate the start date of the requested week
+  const weekStart = new Date(firstMonday);
+  weekStart.setDate(firstMonday.getDate() + (weekNumber - 1) * 7);
+
+  // If the week start is before Jan 1, return Jan 1
+  if (weekStart < jan1) {
+    return formatDate(jan1);
   }
 
-  // For weeks after 1:
-  const jan1Day = jan1.getDay(); // 0 = Sun, 1 = Mon, ... 6 = Sat
-  const daysToAdd = (8 - jan1Day) % 7; // days to next Monday on or after Jan 1
+  return formatDate(weekStart);
+}
 
-  let firstMonday = new Date(jan1);
-  firstMonday.setDate(jan1.getDate() + daysToAdd);
-
-  // Calculate Monday of the requested week (week-2 weeks after the first Monday)
-  let targetDate = new Date(firstMonday);
-  targetDate.setDate(firstMonday.getDate() + (week - 2) * 7);
-
-  // If targetDate is before Jan 1 (should not happen here), reset to Jan 1
-  if (targetDate < jan1) targetDate = jan1;
-
-  // Format date as dd-mm-yyyy
-  const dd = String(targetDate.getDate()).padStart(2, '0');
-  const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
-  const yyyy = targetDate.getFullYear();
-
+// Helper function to format date as dd-mm-yyyy
+function formatDate(date) {
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const yyyy = date.getFullYear();
   return `${dd}-${mm}-${yyyy}`;
 }
