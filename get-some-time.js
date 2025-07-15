@@ -1,30 +1,20 @@
-function firstDayWeek(weekNumber, year) {
-  const jan1 = new Date(`${year}-01-01`);
-  const jan1Day = jan1.getDay(); // 0 (Sun) to 6 (Sat)
+"use strict";
 
-  // Calculate the offset from Jan 1 to the first Monday
-  const offset = jan1Day === 0 ? 1 : 8 - jan1Day;
-
-  // Calculate the first Monday of the year
-  const firstMonday = new Date(jan1);
-  firstMonday.setDate(jan1.getDate() + offset - (weekNumber === 1 ? 0 : 7));
-
-  // Calculate the start date of the requested week
-  const weekStart = new Date(firstMonday);
-  weekStart.setDate(firstMonday.getDate() + (weekNumber - 1) * 7);
-
-  // If the week start is before Jan 1, return Jan 1
-  if (weekStart < jan1) {
-    return formatDate(jan1);
-  }
-
-  return formatDate(weekStart);
-}
-
-// Helper function to format date as dd-mm-yyyy
-function formatDate(date) {
-  const dd = String(date.getDate()).padStart(2, '0');
-  const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-  const yyyy = date.getFullYear();
-  return `${dd}-${mm}-${yyyy}`;
+function firstDayWeek(week, year) {
+    let dd, mm, yyyy
+    const year2 = new Date(year)
+    const oneDay = 24 * 60 * 60 * 1000
+    if (week === 1) {
+        dd = year2.getDate().toString().padStart(2, '0')
+        mm = (year2.getMonth()+1).toString().padStart(2, '0')
+        yyyy = year2.getFullYear().toString().padStart(4, '0')
+        return `${dd}-${mm}-${yyyy}`
+    }
+    const dateOfWeek = new Date((week - 1) * oneDay * 7 + year2.getTime())
+    const monday = dateOfWeek.getDay() == 0? 7:dateOfWeek.getDay()
+    const firstDate = new Date(dateOfWeek.getTime() - ((monday - 1) * oneDay))
+    dd = firstDate.getDate().toString().padStart(2, '0')
+    mm = (firstDate.getMonth()+1).toString().padStart(2, '0')
+    yyyy = firstDate.getFullYear().toString().padStart(4, '0')
+    return `${dd}-${mm}-${yyyy}`
 }
