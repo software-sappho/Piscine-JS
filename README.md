@@ -425,3 +425,99 @@ return isValid(date) && date < new Date();
 ---
 
 If you want, I can also give you example inputs and outputs to make this clearer! Would that help?
+
+
+
+
+
+
+need to study:
+call-me-maybe
+time
+
+---
+
+### 🔹 `document`
+
+* A **built-in global object** in browsers.
+* Represents the entire loaded HTML page (the DOM).
+* Lets you access and manipulate elements on the page using JavaScript.
+* Provided automatically — no need to import or install.
+
+---
+
+### 🔹 DOM (Document Object Model)
+
+* A **tree-like structure** representing your HTML page in memory.
+* JavaScript can interact with the DOM to add, remove, or modify elements in real-time.
+* `document` is your gateway to working with the DOM.
+
+---
+
+### 🔹 Tag Name
+
+* The **name of an HTML element**, like:
+
+  * `<a>` has the tag name `"a"`
+  * `<div>` has the tag name `"div"`
+  * `<span>` has the tag name `"span"`
+* You can search for elements by tag name using:
+
+  ```js
+  document.getElementsByTagName('a')
+  ```
+
+---
+
+### 🔹 `getElementsByTagName('...')`
+
+* A **DOM method** that returns an `HTMLCollection` of all elements with a specific tag name.
+
+  ```js
+  document.getElementsByTagName('a') // All <a> elements
+  ```
+
+---
+
+### 🔹 `HTMLCollection`
+
+* A **collection** (like a list) of DOM elements returned by many DOM methods.
+* It **looks like** an array, but **isn’t** a real JavaScript `Array`.
+* You **can’t** use `.map()`, `.filter()`, or `.forEach()` on it directly.
+
+---
+
+### 🔹 `Array`
+
+* A **built-in JavaScript class** that stores ordered lists of values.
+* Lets you use methods like `.map()`, `.forEach()`, `.filter()`, etc.
+
+  ```js
+  const fruits = ['apple', 'banana', 'pear']
+  ```
+
+---
+
+### 🔹 `Array.from(...)`
+
+* A method that converts array-like things (like `HTMLCollection`) into a real array.
+
+  ```js
+  const realArray = Array.from(document.getElementsByTagName('a'))
+  realArray.forEach(link => console.log(link.href))
+  ```
+
+---
+
+### 🧠 Why this matters
+
+To interact with HTML elements in JavaScript, you:
+
+1. Use `document` to access the page.
+2. Use methods like `getElementsByTagName` to find elements.
+3. Use `Array.from(...)` to turn the result into a real array (if needed).
+4. Use array methods (`.map()`, `.forEach()`, etc.) to work with the elements.
+
+---
+
+Let me know if you want this turned into a cheatsheet or printable format!

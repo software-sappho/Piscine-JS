@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Get them all</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link id="fav" rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
+  <link rel="stylesheet" type="text/css" href="./get-them-all.data.css">
+</head>
+
+<body>
+  <script type="module">
+  async function main() {
+    try {
+      // Dynamic imports must be awaited inside async functions
+      const { people } = await import('./get-them-all.data.js')
+      const { getBonannoPisano, getActive, getArchitects, getClassical } = await import('./get-them-all.js')
+
+      const body = document.querySelector('body')
+
+      const shuffle = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1))
+          ;[array[i], array[j]] = [array[j], array[i]]
+        }
+        return array
+      }
+
+      shuffle(people).forEach(({ id, classe, tag, active }) => {
+        const person = document.createElement(tag)
+        person.id = id
+        person.textContent = 'Someone'
+        person.className = `${classe} ${active ? 'active' : ''}`
+        body.append(person)
+      })
+
+      const buttonsContainer = document.createElement('div')
+      buttonsContainer.id = 'buttons'
+      body.append(buttonsContainer)
+
+      const buttons = [
+        { name: 'Architect', action: getArchitects },
+        { name: 'Classical', action: getClassical },
+        { name: 'Active', action: getActive },
+        { name: 'Bonanno', action: getBonannoPisano },
+      ]
+
+      buttons.forEach(({ name, action }, i) => {
+        const btn = document.createElement('button')
+        btn.id = `btn${name}`
+        btn.textContent = `Get ${name}${i === 0 ? 's' : ''}`
+
+        if (i > 0) btn.className = 'disabled'
+
+        btn.addEventListener('click', () => {
+          const [targetted, others] = action()
+
+          if (name === 'Bonanno') {
+            targetted.textContent = targetted.id.replace('P', ' P')
+            targetted.classList.add('found')
+          } else {
+            targetted.forEach((t) => {
+              t.textContent = name
+            })
+          }
+
+          others.forEach((o) => {
+            o.style.opacity = 0.2
+          })
+
+          btn.className = 'disabled'
+
+          if (i + 1 < buttons.length) {
+            const next = document.getElementById(`btn${buttons[i + 1].name}`)
+            next.classList.remove('disabled')
+          }
+        })
+
+        buttonsContainer.append(btn)
+      })
+
+    } catch (e) {
+      console.error('Error loading modules or running script:', e)
+    }
+  }
+  main()
+</script>
+
+
+</body>
+
+</html>
