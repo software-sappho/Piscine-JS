@@ -1,5 +1,3 @@
-let object = 
-
 function invert(object){
 
     let newObj={};
