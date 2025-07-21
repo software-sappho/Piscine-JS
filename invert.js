@@ -1,12 +1,13 @@
 function invert(object){
 
-    newObj={}
+    let newObj={};
 
     for (let key in object){
         let value = object[key];
         newObj[value]= key;
     }
 
-    return newObj
+    return newObj;
 
 }
+
