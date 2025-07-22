@@ -10,25 +10,32 @@ function filterValues(obj, condition){
     return result;
 }
 
-function mapValues(obj, condition){
+function mapValues(obj, modifier){
     const result = {};
 
     for (const [key, value] of Object.entries(obj)){
-        result[key] = condition(value)
+        result[key] = modifier(value)
     }
     return result;
 }
 
 function reduceValues(obj, callback, initialValue) {
   const values = Object.values(obj);
-  
-  // If no initialValue was passed
-  let accumulator = initialValue !== undefined ? initialValue : values[0];
-  let startIndex = initialValue !== undefined ? 0 : 1;
+
+  let accumulator;
+  let startIndex;
+
+  // If initialValue is passed, start from it; else start from first value
+  if (initialValue !== undefined) {
+    accumulator = initialValue;
+    startIndex = 0;
+  } else {
+    accumulator = values[0];
+    startIndex = 1;
+  }
 
   for (let i = startIndex; i < values.length; i++) {
     accumulator = callback(accumulator, values[i]);
   }
-
   return accumulator;
 }
