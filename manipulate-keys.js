@@ -16,7 +16,7 @@ function mapKeys(obj, modifier){
     const keys = Object.keys(obj);
 
     for(const key of keys){
-        newkey=modifier(key)
+        const newkey=modifier(key)
         result[newkey]=obj[key];
     }
 
