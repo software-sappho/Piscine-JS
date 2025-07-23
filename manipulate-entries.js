@@ -19,12 +19,15 @@ function mapEntries(obj, callback) {
 
 // main functions
 function totalCalories(cart) {
-  return reduceEntries(cart, (acc, [item, grams]) => {
+  const total = reduceEntries(cart, (acc, [item, grams]) => {
     const nutrition = nutritionDB[item];
     const calPerGram = nutrition.calories / 100;
     return acc + calPerGram * grams;
   }, 0);
+  
+  return +total.toFixed(1); // fix floating-point error here
 }
+
 
 function lowCarbs(cart) {
   return filterEntries(cart, ([item, grams]) => {
