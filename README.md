@@ -1,523 +1,224 @@
-Absolutely — here's a **simple and clear** explanation of **dot notation** vs **bracket notation** in JavaScript:
+Absolutely! Let’s break down this rewritten code **step-by-step**, so you get how each part works — no assumptions, super clear.
 
 ---
 
-## 🟠 Dot Notation: `object.key`
-
-### ✅ Works when:
-
-* The **property name is fixed**
-* It's a **valid variable name** (no spaces, starts with a letter, etc.)
-
-### Example:
+### 1. **`defaultCurry`**
 
 ```js
-const obj = {
-  name: "Alex",
-};
-
-console.log(obj.name); // "Alex"
-```
-
-This means: “Give me the `name` property of `obj`.”
-
----
-
-## 🟡 Bracket Notation: `object["key"]` or `object[key]`
-
-### ✅ Works when:
-
-* You have the **key as a string** or a **variable**
-* The key might have **spaces**, **numbers first**, or **special characters**
-* You need to **compute the key at runtime**
-
-### Example:
-
-```js
-const obj = {
-  name: "Alex",
-};
-
-console.log(obj["name"]); // "Alex"
-
-const key = "name";
-console.log(obj[key]); // also "Alex"
-```
-
-Now the key can come from a variable — super useful!
-
----
-
-## 🔥 Key Difference
-
-### Dot notation:
-
-```js
-obj.key; // looks for property literally called "key"
-```
-
-### Bracket notation:
-
-```js
-obj[key]; // uses the **value of the variable** key
-```
-
----
-
-### 💡 When to use each
-
-| Use case                            | Use dot? | Use bracket? |
-| ----------------------------------- | -------- | ------------ |
-| Static key like `name`              | ✅ Yes    | ✅ Yes        |
-| Dynamic key in a variable           | ❌ No     | ✅ Yes        |
-| Key has space or special characters | ❌ No     | ✅ Yes        |
-
----
-
-### 🧪 Example:
-
-```js
-const person = {
-  "first name": "Riley",
-  age: 22
-};
-
-person["first name"]; // ✅ "Riley"
-person.age;           // ✅ 22
-
-const key = "age";
-person[key];          // ✅ 22
-
-person.key;           // ❌ undefined (no property named "key")
-```
-
----
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```js
-const circular = {
-    'circular': circular,
+function defaultCurry(obj1) {
+  return function(obj2) {
+    var res = {};
+    for (var key in obj1) {
+      res[key] = obj1[key];
+    }
+    for (var key in obj2) {
+      res[key] = obj2[key];
+    }
+    return res;
+  };
 }
 ```
 
-❌ **Throws a `ReferenceError`**, because `circular` is being used **before it's defined** — which JavaScript doesn't allow during object initialization.
+* This function **returns another function** (that’s the "curry" part).
+* First, you call it with one object `obj1`.
+* It returns a new function expecting another object `obj2`.
+* When you call the returned function with `obj2`, it **merges** the two objects.
+* It copies all keys/values from `obj1` to a new object `res`.
+* Then it copies all keys/values from `obj2` to `res`, **overwriting** keys that were in `obj1`.
+* Finally, it returns this merged object.
+
+**Example:**
+
+```js
+var mergeWith = defaultCurry({a: 1, b: 2});
+var result = mergeWith({b: 3, c: 4});
+// result is {a: 1, b: 3, c: 4}
+```
 
 ---
 
-### ✅ Correct Way to Make a Circular Reference
-
-You need to **first declare the object**, and **then assign the circular reference**:
+### 2. **`mapCurry`**
 
 ```js
-const circular = {};
-circular.circular = circular;
-```
-
-Now `circular.circular.circular.circular...` will always point back to `circular` — infinitely. This is how you correctly create **self-referencing (circular)** structures in JavaScript.
-
----
-
-### Why It Matters
-
-Circular references can cause issues with:
-
-* `JSON.stringify()` (will throw a `TypeError`)
-* Deep copying
-* Some serialization processes
-
-Let me know if you’re using this for something specific and need help with that!
-
-
-🔧 What does .slice(1) mean?
-js
-Copy
-Edit
-str.slice(1)
-This returns a copy of the string from index 1 to the end (i.e. it skips the first character).
-
-Example:
-js
-Copy
-Edit
-const str = "hello";
-console.log(str.slice(1)); // "ello"
-So if you want to capitalize only the first letter and lowercase the rest:
-
-js
-Copy
-Edit
-capitalize("hELLO")
-➡ You want:
-
-h → uppercase = H
-
-ELLO → lowercase = ello
-
-So: "H" + "ello" = "Hello"
-
-exercises to read:
-change
-circular
-declerations
-dog-years
-last first kiss
-mutability
-
-
-
-
-
-Absolutely — let’s walk through your code step by step and match it directly to the exercise instructions ✅.
-
----
-
-## 🧪 Exercise Checklist Breakdown
-
-### ✅ Part 1: `addWeek(date)`
-
-> “Create a new function named `addWeek`, that takes a Date as an argument. Your function should return the weekday as a string, according to our new 14-day week format. The epoch of our new 14-day week is 0001-01-01, and that was a Monday.”
-
-### 🧠 What your code does:
-
-```js
-const epoch = new Date('0001-01-01');
-```
-
-* ✅ Correctly sets the starting point (epoch), which is `Monday`.
-
-```js
-const week = [ /* ... 14-day array ... */ ];
-```
-
-* ✅ Matches the 14-day week format with `"secondMonday"` to `"secondSunday"`.
-
-```js
-function addWeek(date){
-    const diff = date - epoch;
-    const daysPassed = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const index = daysPassed % 14;
-    return week[index];
+function mapCurry(func) {
+  return function(obj) {
+    var res = {};
+    for (var key in obj) {
+      var entry = [key, obj[key]];
+      var result = func(entry);
+      var newKey = result[0];
+      var newValue = result[1];
+      res[newKey] = newValue;
+    }
+    return res;
+  };
 }
 ```
 
-* ✅ Takes a `Date` as argument.
-* ✅ Computes how many **full days** have passed since epoch.
-* ✅ Uses `% 14` to find correct position in the custom week.
-* ✅ Returns the **correct weekday string** from the new format.
+* This function returns another function that takes an object.
+* The inner function loops over every key/value in the object.
+* It turns each key/value pair into an array `[key, value]` called `entry`.
+* It passes this `entry` to `func` — your custom function.
+* Your function must return a **new entry array** `[newKey, newValue]`.
+* These new entries build a **new object** `res`.
+* This is like `.map` but for objects instead of arrays.
 
-📌 **Matches the example outputs**:
+**Example:**
 
-* `addWeek(new Date('0001-01-01'))` → `Monday`
-* `addWeek(new Date('0001-01-08'))` → `secondMonday`
-
-✅ **✅ This part is 100% correct and matches the spec.**
+```js
+var addSuffix = mapCurry(function([k, v]) {
+  return [k + "_new", v];
+});
+var newObj = addSuffix({x: 10, y: 20});
+// newObj is {x_new: 10, y_new: 20}
+```
 
 ---
 
-### ✅ Part 2: `timeTravel(object)`
-
-> “Create a new function named `timeTravel`, that takes an object as an argument, and returns a Date. Use the information from the object to modify the time of the Date before returning it.”
-
-### 🧠 What your code does:
+### 3. **`reduceCurry`**
 
 ```js
-function timeTravel(object){
-    const { date, hour, minute, second } = object;
-
-    date.setHours(hour);
-    date.setMinutes(minute);
-    date.setSeconds(second);
-
-    return date;
+function reduceCurry(func) {
+  return function(obj, val) {
+    if (val === undefined) val = 0;
+    var entries = Object.entries(obj);
+    var rebuilt = Object.fromEntries(entries);
+    for (var key in rebuilt) {
+      var entry = [key, rebuilt[key]];
+      val = func(val, entry);
+    }
+    return val;
+  };
 }
 ```
 
-* ✅ Accepts an `object` with keys `date`, `hour`, `minute`, `second`.
-* ✅ Modifies the `.date` object **in place** to set the new time.
-* ✅ Returns the modified `Date`.
+* Returns a function that **reduces an object to a single value**.
+* The inner function takes an object and an optional starting value `val` (default `0`).
+* It gets entries `[key, value]` from the object.
+* It rebuilds the object (just to be safe, could skip this step).
+* It loops through the object keys.
+* For each entry, it calls your reduce function `func` passing:
 
-📌 **Matches the expected output**:
+  * The current accumulated value `val`
+  * The current entry `[key, value]`
+* Updates `val` with the result.
+* Returns the final `val`.
+
+**Example:**
 
 ```js
-timeTravel({
-  date: new Date('2020-05-29 23:25:22'),
-  hour: 21,
-  minute: 22,
-  second: 22,
-}).toString()
-// Expected: Fri May 29 2020 21:22:22 ...
+var sumValues = reduceCurry(function(acc, [k, v]) {
+  return acc + v;
+});
+var total = sumValues({a: 1, b: 2, c: 3});
+// total is 6
 ```
 
-✅ **✅ This part is also 100% correct.**
-
 ---
 
-## 🧾 Final Verdict
-
-| Requirement                                              | Your Code |
-| -------------------------------------------------------- | --------- |
-| `addWeek(date)` returns new weekday based on 14-day week | ✅ Correct |
-| Uses epoch `0001-01-01` as Monday                        | ✅ Correct |
-| Calculates days passed accurately                        | ✅ Correct |
-| `timeTravel(object)` modifies time of a Date             | ✅ Correct |
-| Accepts and uses object fields properly                  | ✅ Correct |
-| Returns a valid updated `Date`                           | ✅ Correct |
-
----
-
-## 💯 Summary
-
-Your code **fully satisfies the assignment requirements**. It's clean, efficient, and logically correct.
-
-🚀 You’ve taken a real-world concept (time and dates), used core JS tools (`Date`, math, objects), and applied them successfully.
-
-If you’d like, I can show you some bonus things you could try next — like adding error checking, or formatting output — but **as far as the original exercise goes, you're done and nailed it.** 🎉
-
-
-
-
-
-
-
-
-
-
-
-Absolutely! Let’s walk through the code piece by piece and clarify what everything means, especially the trickier parts like `NaN`, `new Date()`, and how your `isValid`, `isFuture`, and `isPast` functions work.
-
----
-
-## 1. `function isValid(date)`
-
-### What it does:
-
-Checks if the input `date` is a valid date representation — either as a Date object or as a number representing a timestamp.
-
-### Breakdown:
+### 4. **`filterCurry`**
 
 ```js
-if (date instanceof Date) {
-  return !isNaN(date);
+function filterCurry(func) {
+  return function(obj) {
+    var res = {};
+    for (var key in obj) {
+      var entry = [key, obj[key]];
+      if (func(entry)) {
+        res[key] = obj[key];
+      }
+    }
+    return res;
+  };
 }
 ```
 
-* **`date instanceof Date`**
-  Checks if `date` is an actual JavaScript Date object, like one created with `new Date()`.
+* Returns a function that **filters the entries of an object**.
+* The inner function loops over the object’s keys.
+* For each entry `[key, value]`, it calls your filter function `func`.
+* If `func` returns `true`, the entry is kept in the new object `res`.
+* Otherwise, it’s ignored.
+* Returns the filtered object.
 
-  * Example: `new Date()` → true
-  * Example: `"2024-01-01"` → false
+**Example:**
 
-* **`isNaN(date)`**
-
-  * `NaN` means "Not a Number".
-  * When JavaScript tries to interpret a Date, if it’s invalid (like `new Date("nonsense")`), its internal value becomes `NaN`.
-  * `!isNaN(date)` means “date is NOT NaN” → so it’s a **valid date**.
+```js
+var keepStrings = filterCurry(function([k, v]) {
+  return typeof v === 'string';
+});
+var filtered = keepStrings({a: 'hello', b: 5, c: 'world'});
+// filtered is {a: 'hello', c: 'world'}
+```
 
 ---
 
+### 5. **`reduceScore`**
+
 ```js
-else if (typeof date === "number") {
-  return !isNaN(new Date(date));
+function reduceScore(personnel, val) {
+  var onlyForceUsers = filterCurry(function(entry) {
+    var value = entry[1];
+    return value.isForceUser;
+  })(personnel);
+
+  return reduceCurry(function(acc, entry) {
+    var value = entry[1];
+    return acc + value.pilotingScore + value.shootingScore;
+  })(onlyForceUsers, val);
 }
 ```
 
-* If `date` is a **number** (for example, a timestamp from `Date.now()`),
-* The function tries to create a Date object with that number: `new Date(date)`.
-* Then checks if that new Date is valid (`!isNaN(...)`).
+* This function takes a `personnel` object and an optional `val`.
+* First, it **filters** to keep only force users (those where `isForceUser` is true).
+* Then, it **reduces** over those force users to sum their `pilotingScore` + `shootingScore`.
+* Returns the total score sum.
 
 ---
+
+### 6. **`filterForce`**
 
 ```js
-else {
-  return false;
-}
+var filterForce = filterCurry(function(entry) {
+  var value = entry[1];
+  return value.isForceUser && value.shootingScore >= 80;
+});
 ```
 
-* If `date` is neither a Date object nor a number, it’s **not valid**.
+* Uses `filterCurry` to create a function that keeps only force users with shooting score >= 80.
 
 ---
 
-### Summary:
-
-* If you give it a proper Date object, it checks if it’s valid.
-* If you give it a timestamp number, it creates a Date and checks validity.
-* Anything else → invalid.
-
----
-
-## 2. `function isFuture(date)`
+### 7. **`mapAverage`**
 
 ```js
-return isValid(date) && date > new Date();
+var mapAverage = mapCurry(function(entry) {
+  var key = entry[0];
+  var value = entry[1];
+  var averageScore = (value.pilotingScore + value.shootingScore) / 2;
+
+  var newValue = {};
+  for (var prop in value) {
+    newValue[prop] = value[prop];
+  }
+  newValue.averageScore = averageScore;
+
+  return [key, newValue];
+});
 ```
 
-### What it does:
-
-* Calls `isValid(date)` to make sure `date` is a valid date.
-* Compares `date` to `new Date()` (which is **current time**).
-* Returns `true` if the date is **valid and later than right now** (i.e., in the future).
+* Uses `mapCurry` to add a new property `averageScore` to each person.
+* Creates a copy of each person's object with the new `averageScore`.
+* Returns a new object with these updated entries.
 
 ---
 
-## 3. `function isPast(date)`
+# **Summary**
 
-```js
-return isValid(date) && date < new Date();
-```
-
-### What it does:
-
-* Checks if `date` is valid.
-* Compares if `date` is **earlier than now**.
-* Returns `true` if the date is **valid and before the current time** (i.e., in the past).
+* The outer functions like `defaultCurry`, `mapCurry`, etc. are **higher-order functions** — they return new functions that do stuff with objects.
+* The inner functions take objects and loop through keys with `for...in`.
+* They use your provided callback (`func`) on entries `[key, value]`.
+* They build new objects or accumulate values as needed.
 
 ---
 
-## 🔎 What is `new Date()`?
 
-* This creates a new Date object representing the **current date and time**.
-* For example, if you run `new Date()` right now, you get an object that holds "2025-07-14T...".
-* You can also create dates from strings or numbers:
-
-  * `new Date('2024-01-01')`
-  * `new Date(1689379200000)` (timestamp in milliseconds)
-
----
-
-## 🔎 What is `NaN`?
-
-* **`NaN` means “Not a Number.”**
-
-* It’s a special value in JavaScript used to represent an invalid or undefined numerical result.
-
-* For example:
-
-  * `parseInt("hello")` → `NaN`
-  * `0 / 0` → `NaN`
-
-* `isNaN(value)` is a function that returns `true` if `value` is `NaN`.
-
-* So `!isNaN(date)` means: the date is **not** invalid.
-
----
-
-## Summary in simple terms:
-
-| Function   | What it checks                            | What it returns                 |
-| ---------- | ----------------------------------------- | ------------------------------- |
-| `isValid`  | Is this a valid Date object or timestamp? | `true` if valid, else `false`   |
-| `isFuture` | Is this date valid AND after right now?   | `true` if date is in the future |
-| `isPast`   | Is this date valid AND before right now?  | `true` if date is in the past   |
-
----
-
-If you want, I can also give you example inputs and outputs to make this clearer! Would that help?
-
-
-
-
-
-
-need to study:
-call-me-maybe
-time
-
----
-
-### 🔹 `document`
-
-* A **built-in global object** in browsers.
-* Represents the entire loaded HTML page (the DOM).
-* Lets you access and manipulate elements on the page using JavaScript.
-* Provided automatically — no need to import or install.
-
----
-
-### 🔹 DOM (Document Object Model)
-
-* A **tree-like structure** representing your HTML page in memory.
-* JavaScript can interact with the DOM to add, remove, or modify elements in real-time.
-* `document` is your gateway to working with the DOM.
-
----
-
-### 🔹 Tag Name
-
-* The **name of an HTML element**, like:
-
-  * `<a>` has the tag name `"a"`
-  * `<div>` has the tag name `"div"`
-  * `<span>` has the tag name `"span"`
-* You can search for elements by tag name using:
-
-  ```js
-  document.getElementsByTagName('a')
-  ```
-
----
-
-### 🔹 `getElementsByTagName('...')`
-
-* A **DOM method** that returns an `HTMLCollection` of all elements with a specific tag name.
-
-  ```js
-  document.getElementsByTagName('a') // All <a> elements
-  ```
-
----
-
-### 🔹 `HTMLCollection`
-
-* A **collection** (like a list) of DOM elements returned by many DOM methods.
-* It **looks like** an array, but **isn’t** a real JavaScript `Array`.
-* You **can’t** use `.map()`, `.filter()`, or `.forEach()` on it directly.
-
----
-
-### 🔹 `Array`
-
-* A **built-in JavaScript class** that stores ordered lists of values.
-* Lets you use methods like `.map()`, `.forEach()`, `.filter()`, etc.
-
-  ```js
-  const fruits = ['apple', 'banana', 'pear']
-  ```
-
----
-
-### 🔹 `Array.from(...)`
-
-* A method that converts array-like things (like `HTMLCollection`) into a real array.
-
-  ```js
-  const realArray = Array.from(document.getElementsByTagName('a'))
-  realArray.forEach(link => console.log(link.href))
-  ```
-
----
-
-### 🧠 Why this matters
-
-To interact with HTML elements in JavaScript, you:
-
-1. Use `document` to access the page.
-2. Use methods like `getElementsByTagName` to find elements.
-3. Use `Array.from(...)` to turn the result into a real array (if needed).
-4. Use array methods (`.map()`, `.forEach()`, etc.) to work with the elements.
-
----
-
-Let me know if you want this turned into a cheatsheet or printable format!
