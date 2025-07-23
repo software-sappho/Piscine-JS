@@ -1,50 +1,23 @@
-// helpers
-function reduceEntries(obj, callback, initial) {
-  return Object.entries(obj).reduce((acc, [k, v]) => callback(acc, [k, v]), initial);
+function filterEntries(obj, ...func) {
+    return Object.fromEntries(Object.entries(obj).filter(...func))
 }
 
-function filterEntries(obj, callback) {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([k, v]) => callback([k, v]))
-  );
+function mapEntries(obj, ...func) {
+    return Object.fromEntries(Object.entries(obj).map(...func))
 }
 
-function mapEntries(obj, callback) {
-  return Object.fromEntries(
-    Object.entries(obj).map(([k, v]) => callback([k, v]))
-  );
+function reduceEntries(obj, ...func) {
+    return Object.entries(obj).reduce(...func)
 }
 
-
-
-// main functions
-function totalCalories(cart) {
-  const total = reduceEntries(cart, (acc, [item, grams]) => {
-    const nutrition = nutritionDB[item];
-    const calPerGram = nutrition.calories / 100;
-    return acc + calPerGram * grams;
-  }, 0);
-  
-  return +total.toFixed(1); // fix floating-point error here
+function totalCalories(obj) {
+    return +reduceEntries(obj, (acc, [key, v]) => acc + (nutritionDB[key].calories * v / 100), 0).toFixed(1)
 }
 
-
-function lowCarbs(cart) {
-  return filterEntries(cart, ([item, grams]) => {
-    const nutrition = nutritionDB[item];
-    const totalCarbs = nutrition.carbs * grams / 100;
-    return totalCarbs < 50;
-  });
+function lowCarbs(obj) {
+    return filterEntries(obj, ([key, v]) => Number(nutritionDB[key].carbs * v / 100 < 50))
 }
 
-function cartTotal(cart) {
-  return mapEntries(cart, function([item, grams]) {
-    const nutrition = nutritionDB[item];
-    const scaled = {};
-    for (const key in nutrition) {
-      scaled[key] = nutrition[key] * grams / 100;
-    }
-    return [item, scaled];
-  });
+function cartTotal(obj) {
+    return mapEntries(obj, ([key, v]) => [key, mapEntries(nutritionDB[key], ([key, va]) => [key, +(va * v / 100).toFixed(3)])])
 }
-
