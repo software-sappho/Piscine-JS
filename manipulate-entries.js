@@ -38,12 +38,13 @@ function lowCarbs(cart) {
 }
 
 function cartTotal(cart) {
-  return mapEntries(cart, ([item, grams]) => {
+  return mapEntries(cart, function([item, grams]) {
     const nutrition = nutritionDB[item];
     const scaled = {};
     for (const key in nutrition) {
-      scaled[key] = +(nutrition[key] * grams / 100).toFixed(2);
+      scaled[key] = nutrition[key] * grams / 100;
     }
     return [item, scaled];
   });
 }
+
