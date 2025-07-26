@@ -1,23 +1,17 @@
-// Debounce function
-function debounce(func, delay) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            func.apply(this, args);
-        }, delay);
-    };
+function debounce(func, wait = 0) {
+    let timer
+    return (...args) => {
+        clearTimeout(timer)
+        timer = setTimeout(() => func(...args), wait)
+    }
 }
 
-// Function to be debounced
-function search(query) {
-    console.log('Searching for:', query);
+
+function opDebounce(func, wait = 0, options = {}) {
+    let timer
+    return (...args) => {
+        if (!timer && options["leading"]) func(...args)
+        clearTimeout(timer)
+        timer = setTimeout(() => func(...args), wait)
+    }
 }
-
-// Create a debounced version of the search function
-const dSearch = debounce(search, 100);
-
-// Simulate typing with multiple calls to the debounced function
-dSearch('Hello');
-dSearch('Hello, ');
-dSearch('Hello, World!');  // Only this call will trigger after 100ms
