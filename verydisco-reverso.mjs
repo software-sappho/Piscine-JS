@@ -8,12 +8,11 @@ const content = await readFile(filename, 'utf8')
 let result = "";
 
 for (let i = 0; i < content.length; i++) {
-    const word = content[i];
-    const mid = Math.ceil(word.length / 2);
-    const firstHalf = word.slice(0, mid);
-    const secondHalf = word.slice(mid);
+    const mid = Math.ceil(content.length / 2);
+    const firstHalf = content.slice(0, mid);
+    const secondHalf = content.slice(mid);
     
-    result += secondHalf + firstHalf;
+    result = secondHalf + firstHalf;
 }
 
 console.log(result)
