@@ -5,15 +5,17 @@ const words = args.split(" ");
 
 let result = "";
 
-for (let word of words){
-    const mid= Math.ceil(word.length/2);
+for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    const mid = Math.ceil(word.length / 2);
     const firstHalf = word.slice(0, mid);
     const secondHalf = word.slice(mid);
-
-    if (words.length>1){
-        result += secondHalf + firstHalf + " ";
-    }else{
-        result += secondHalf + firstHalf;
+    
+    result += secondHalf + firstHalf;
+    
+    // Add space only if it's NOT the last word
+    if (i !== words.length - 1) {
+        result += " ";
     }
 }
 
