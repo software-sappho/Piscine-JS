@@ -10,7 +10,11 @@ for (let word of words){
     const firstHalf = word.slice(0, mid);
     const secondHalf = word.slice(mid);
 
-    result += secondHalf + firstHalf + " ";
+    if (words.length>1){
+        result += secondHalf + firstHalf + " ";
+    }else{
+        result += secondHalf + firstHalf;
+    }
 }
 
 writeFileSync('verydisco-forever.txt', result);
