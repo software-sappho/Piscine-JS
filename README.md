@@ -1,224 +1,79 @@
-Absolutely! Let’s break down this rewritten code **step-by-step**, so you get how each part works — no assumptions, super clear.
+
+# 🧠 JS Piscine Contributions
+
+Hi! I’m **Software Sappho**  
+Welcome to my corner of code — this repository contains my contributions during the **JavaScript Piscine** at **Zone01**.
+
+The Piscine ("swimming pool") is an intense, fast-paced immersion into programming. Over several days, we dove deep into JavaScript fundamentals, tackling real challenges with little hand-holding. It was tough, rewarding, and full of "aha!" moments. This repo documents my growth — with all the wins, bugs, and lessons along the way.
+
+---
+## 📁 Project Structure
+
+You'll find my work organized by quests — each folder represents a core concept or challenge area:
+
+```
+
+.
+├── async/           # Promises, async/await, callbacks
+├── call-me-maybe/   # Function and context handling
+├── data/            # Data structures and manipulation
+├── dom/             # DOM interaction and manipulation
+├── find/            # Search, filtering, logic challenges
+├── loop/            # Iteration patterns and loops
+├── node/            # Node.js-based scripting
+├── object/          # Object-oriented JS and manipulation
+└── time/            # Time-based functions and scheduling
+
+````
+
+Each folder typically contains one or more `.js` files representing individual exercises or mini-projects.
 
 ---
 
-### 1. **`defaultCurry`**
+## 🚀 How to Use This Repo
 
-```js
-function defaultCurry(obj1) {
-  return function(obj2) {
-    var res = {};
-    for (var key in obj1) {
-      res[key] = obj1[key];
-    }
-    for (var key in obj2) {
-      res[key] = obj2[key];
-    }
-    return res;
-  };
-}
-```
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/software-sappho/Piscine-JS.git
+   cd Piscine-JS
+    ```
 
-* This function **returns another function** (that’s the "curry" part).
-* First, you call it with one object `obj1`.
-* It returns a new function expecting another object `obj2`.
-* When you call the returned function with `obj2`, it **merges** the two objects.
-* It copies all keys/values from `obj1` to a new object `res`.
-* Then it copies all keys/values from `obj2` to `res`, **overwriting** keys that were in `obj1`.
-* Finally, it returns this merged object.
+2. **Run JavaScript files**
+   Many of the exercises can be run directly in your terminal using [Node.js](https://nodejs.org/):
 
-**Example:**
+   ```bash
+   node loop/chunky.js
+   ```
 
-```js
-var mergeWith = defaultCurry({a: 1, b: 2});
-var result = mergeWith({b: 3, c: 4});
-// result is {a: 1, b: 3, c: 4}
-```
+3. **Check for requirements**
+   Some exercises expect input files, command-line arguments, or are designed to be part of a broader script. Read any comments inside the files for clues.
 
 ---
 
-### 2. **`mapCurry`**
+## 🛠️ Requirements
 
-```js
-function mapCurry(func) {
-  return function(obj) {
-    var res = {};
-    for (var key in obj) {
-      var entry = [key, obj[key]];
-      var result = func(entry);
-      var newKey = result[0];
-      var newValue = result[1];
-      res[newKey] = newValue;
-    }
-    return res;
-  };
-}
-```
+To run most scripts here, you'll need:
 
-* This function returns another function that takes an object.
-* The inner function loops over every key/value in the object.
-* It turns each key/value pair into an array `[key, value]` called `entry`.
-* It passes this `entry` to `func` — your custom function.
-* Your function must return a **new entry array** `[newKey, newValue]`.
-* These new entries build a **new object** `res`.
-* This is like `.map` but for objects instead of arrays.
-
-**Example:**
-
-```js
-var addSuffix = mapCurry(function([k, v]) {
-  return [k + "_new", v];
-});
-var newObj = addSuffix({x: 10, y: 20});
-// newObj is {x_new: 10, y_new: 20}
-```
+* [Node.js](https://nodejs.org/en/) (v18+ recommended)
+* A terminal or shell (e.g. Bash, Zsh, Git Bash, etc.)
+* A curious mind and willingness to debug 🙂
 
 ---
 
-### 3. **`reduceCurry`**
+## 💡 Notes
+This repo is more than just code — it’s a snapshot of learning in motion.
 
-```js
-function reduceCurry(func) {
-  return function(obj, val) {
-    if (val === undefined) val = 0;
-    var entries = Object.entries(obj);
-    var rebuilt = Object.fromEntries(entries);
-    for (var key in rebuilt) {
-      var entry = [key, rebuilt[key]];
-      val = func(val, entry);
-    }
-    return val;
-  };
-}
-```
+I struggled. A lot. Some days, nothing made sense. I spent hours researching, digging through documentation, reading others' code, and piecing together scattered hints. And that’s okay — it’s part of the journey.
 
-* Returns a function that **reduces an object to a single value**.
-* The inner function takes an object and an optional starting value `val` (default `0`).
-* It gets entries `[key, value]` from the object.
-* It rebuilds the object (just to be safe, could skip this step).
-* It loops through the object keys.
-* For each entry, it calls your reduce function `func` passing:
+If you’re looking through this repo, you might be on your own Piscine path or trying to learn JavaScript. I hope these files help you, whether it’s for inspiration, debugging, or just knowing someone else fought through the same confusion.
 
-  * The current accumulated value `val`
-  * The current entry `[key, value]`
-* Updates `val` with the result.
-* Returns the final `val`.
+Feel free to run it, break it, fix it — that’s how we learn.
 
-**Example:**
+And if you're currently in the thick of a bootcamp or Piscine: **keep going**. It’s not meant to be easy, but it is absolutely worth it. Trust the process, be curious, and don’t be afraid to ask questions — or to Google the same thing five times in one day.
 
-```js
-var sumValues = reduceCurry(function(acc, [k, v]) {
-  return acc + v;
-});
-var total = sumValues({a: 1, b: 2, c: 3});
-// total is 6
-```
+You’re not alone. 🌱
 
 ---
 
-### 4. **`filterCurry`**
-
-```js
-function filterCurry(func) {
-  return function(obj) {
-    var res = {};
-    for (var key in obj) {
-      var entry = [key, obj[key]];
-      if (func(entry)) {
-        res[key] = obj[key];
-      }
-    }
-    return res;
-  };
-}
-```
-
-* Returns a function that **filters the entries of an object**.
-* The inner function loops over the object’s keys.
-* For each entry `[key, value]`, it calls your filter function `func`.
-* If `func` returns `true`, the entry is kept in the new object `res`.
-* Otherwise, it’s ignored.
-* Returns the filtered object.
-
-**Example:**
-
-```js
-var keepStrings = filterCurry(function([k, v]) {
-  return typeof v === 'string';
-});
-var filtered = keepStrings({a: 'hello', b: 5, c: 'world'});
-// filtered is {a: 'hello', c: 'world'}
-```
-
----
-
-### 5. **`reduceScore`**
-
-```js
-function reduceScore(personnel, val) {
-  var onlyForceUsers = filterCurry(function(entry) {
-    var value = entry[1];
-    return value.isForceUser;
-  })(personnel);
-
-  return reduceCurry(function(acc, entry) {
-    var value = entry[1];
-    return acc + value.pilotingScore + value.shootingScore;
-  })(onlyForceUsers, val);
-}
-```
-
-* This function takes a `personnel` object and an optional `val`.
-* First, it **filters** to keep only force users (those where `isForceUser` is true).
-* Then, it **reduces** over those force users to sum their `pilotingScore` + `shootingScore`.
-* Returns the total score sum.
-
----
-
-### 6. **`filterForce`**
-
-```js
-var filterForce = filterCurry(function(entry) {
-  var value = entry[1];
-  return value.isForceUser && value.shootingScore >= 80;
-});
-```
-
-* Uses `filterCurry` to create a function that keeps only force users with shooting score >= 80.
-
----
-
-### 7. **`mapAverage`**
-
-```js
-var mapAverage = mapCurry(function(entry) {
-  var key = entry[0];
-  var value = entry[1];
-  var averageScore = (value.pilotingScore + value.shootingScore) / 2;
-
-  var newValue = {};
-  for (var prop in value) {
-    newValue[prop] = value[prop];
-  }
-  newValue.averageScore = averageScore;
-
-  return [key, newValue];
-});
-```
-
-* Uses `mapCurry` to add a new property `averageScore` to each person.
-* Creates a copy of each person's object with the new `averageScore`.
-* Returns a new object with these updated entries.
-
----
-
-# **Summary**
-
-* The outer functions like `defaultCurry`, `mapCurry`, etc. are **higher-order functions** — they return new functions that do stuff with objects.
-* The inner functions take objects and loop through keys with `for...in`.
-* They use your provided callback (`func`) on entries `[key, value]`.
-* They build new objects or accumulate values as needed.
-
----
-
-
+Made with patience, perseverance, and plenty of `console.log()`,
+**🌈  Software Sappho**
