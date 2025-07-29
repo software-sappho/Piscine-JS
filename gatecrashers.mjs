@@ -1,16 +1,11 @@
 import http from 'http'
 import { writeFile, mkdir } from 'fs/promises'
-import { join, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { join } from 'path'
 
 const PORT = 5000
 
-// Ensure compatibility with ES modules (__dirname equivalent)
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
-// Guests directory inside current script's folder
-const GUESTS_DIR = join(__dirname, 'guests')
+// guests directory inside current working directory (test temp folder)
+const GUESTS_DIR = join(process.cwd(), 'guests')
 
 const allowedUsers = new Set([
   'Caleb_Squires:abracadabra',
@@ -50,7 +45,7 @@ const server = http.createServer((req, res) => {
     try {
       const parsed = JSON.parse(body)
 
-      // Ensure guests directory exists
+      // Make sure guests directory exists in current working dir
       await mkdir(GUESTS_DIR, { recursive: true })
 
       await writeFile(filePath, JSON.stringify(parsed))
