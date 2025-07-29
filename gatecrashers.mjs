@@ -1,9 +1,16 @@
 import http from 'http'
-import { writeFile } from 'fs/promises'
-import { join } from 'path'
+import { writeFile, mkdir } from 'fs/promises'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
 
 const PORT = 5000
-const GUESTS_DIR = join(process.cwd(), 'guests')
+
+// Ensure compatibility with ES modules (__dirname equivalent)
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+// Guests directory inside current script's folder
+const GUESTS_DIR = join(__dirname, 'guests')
 
 const allowedUsers = new Set([
   'Caleb_Squires:abracadabra',
@@ -41,10 +48,14 @@ const server = http.createServer((req, res) => {
 
   req.on('end', async () => {
     try {
-      const parsed = JSON.parse(body) // Only accept valid JSON
-      await writeFile(filePath, JSON.stringify(parsed)) // write pretty JSON
+      const parsed = JSON.parse(body)
+
+      // Ensure guests directory exists
+      await mkdir(GUESTS_DIR, { recursive: true })
+
+      await writeFile(filePath, JSON.stringify(parsed))
       res.writeHead(200, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify(parsed)) // echo the parsed object
+      res.end(JSON.stringify(parsed))
     } catch {
       res.writeHead(500, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify({ error: 'server failed' }))
