@@ -75,7 +75,7 @@ try {
     const groups = Math.ceil(vegTotal / 3);
     shoppingList.eggplants = groups;
     shoppingList.courgettes = groups;
-    shoppingList.mushrooms = groups * 3;
+    shoppingList.mushrooms = vegTotal; // Fixed: 1 per VIP
     shoppingList.hummus = groups;
   }
 
