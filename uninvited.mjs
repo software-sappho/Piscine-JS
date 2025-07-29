@@ -23,13 +23,15 @@ const server = http.createServer((req, res) => {
 
   req.on('end', async () => {
     try {
+      // Try parsing JSON, even if it's a string (e.g., "hello")
       const parsed = JSON.parse(body)
 
+      // Write to file (overwrite if exists)
       await writeFile(filePath, body)
 
       res.writeHead(201, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify(parsed))
-    } catch (err) {
+    } catch {
       res.writeHead(500, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify({ error: 'server failed' }))
     }
