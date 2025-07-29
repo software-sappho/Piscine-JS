@@ -14,7 +14,6 @@ const server = http.createServer((req, res) => {
 
   const guestName = req.url.slice(1)
   const filePath = join(GUESTS_DIR, `${guestName}.json`)
-
   let body = ''
 
   req.on('data', chunk => {
@@ -23,11 +22,15 @@ const server = http.createServer((req, res) => {
 
   req.on('end', async () => {
     try {
-      // Try parsing JSON, even if it's a string (e.g., "hello")
-      const parsed = JSON.parse(body)
+      await writeFile(filePath, body) // store raw body
 
-      // Write to file (overwrite if exists)
-      await writeFile(filePath, body)
+      // Try parsing body as JSON if possible, else send as string
+      let parsed
+      try {
+        parsed = JSON.parse(body)
+      } catch {
+        parsed = body // keep it as-is if it's not JSON
+      }
 
       res.writeHead(201, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify(parsed))
